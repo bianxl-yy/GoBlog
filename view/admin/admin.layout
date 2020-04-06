@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <title>{{.Title}} - Fxh.Go</title>
     <link rel="stylesheet" href="/static/css/admin.css"/>
-    <script src="http://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
     <script src="/static/lib/jquery.form.min.js"></script>
     <script src="/static/lib/validate.min.js"></script>
 </head>
