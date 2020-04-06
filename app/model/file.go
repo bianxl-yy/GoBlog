@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/fuxiaohei/GoBlog/app/utils"
+	"github.com/bianxl-yy/GoBlog/app/utils"
 	"os"
 	"path"
 	"strconv"

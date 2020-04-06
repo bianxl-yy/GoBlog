@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"github.com/Unknwon/cae/zip"
-	"github.com/fuxiaohei/GoBlog/app/model"
-	"github.com/fuxiaohei/GoBlog/app/utils"
+	"github.com/bianxl-yy/GoBlog/app/model"
+	"github.com/bianxl-yy/GoBlog/app/utils"
 	"github.com/fuxiaohei/GoInk"
 	"os"
 	"path"

@@ -1,3 +1,6 @@
+
+### 介绍
+
 > 自己玩系列
 
 ### Overview
@@ -7,10 +10,6 @@
 `Fxh.Go` supports markdown contents as articles or pages, ajax comments and dynamic administration.
 
 `Fxh.Go` contains two kinds of content as article and page. They can be customized as you want.
-
-### Installation
-
-`Fxh.Go` requires **Go 1.2** or above.
 
 ##### Admin
 
@@ -37,10 +36,6 @@ I prefer to use nginx as proxy. The server section in `nginx.conf`:
                     access_log      off;
                 }
         }
-
-### Questions
-
-Create issues or pull requests here.
 
 ### Products
 

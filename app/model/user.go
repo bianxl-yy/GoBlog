@@ -2,7 +2,7 @@ package model
 
 import (
 	"errors"
-	"github.com/fuxiaohei/GoBlog/app/utils"
+	"github.com/bianxl-yy/GoBlog/app/utils"
 )
 
 var (
