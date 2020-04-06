@@ -1,15 +1,4 @@
-### Notice: this project is deprecated. Please try my new blog engine [pugo](https://github.com/go-xiaohei/pugo).
-
-#Fxh.Go
-
-A fast and simple blog engine with [GoInk](https://github.com/fuxiaohei/GoInk) framework in Golang.
-
-[![Build Status](https://drone.io/github.com/fuxiaohei/GoBlog/status.png)](https://drone.io/github.com/fuxiaohei/GoBlog/latest)
-[![GoWalker](http://b.repl.ca/v1/Go_Walker-API_Documentation-green.png)](http://gowalker.org/github.com/fuxiaohei/GoBlog)
-
-Current version is **0.2.5** on 2014.02.28
-
-Development board is in [Trello](https://trello.com/b/7AHrcQL8/fxh-go-with-goink).
+> 自己玩系列
 
 ### Overview
 
@@ -22,29 +11,6 @@ Development board is in [Trello](https://trello.com/b/7AHrcQL8/fxh-go-with-goink
 ### Installation
 
 `Fxh.Go` requires **Go 1.2** or above.
-
-##### Gobuild.io
-
-[Gobuild.io](http://gobuild.io/) can build cross-platform executable file for pure go projects. You can download `Fxh.Go` binary from Gobuild.io.
-
-[![Gobuild Download](http://gobuild.io/badge/github.com/fuxiaohei/GoBlog/download.png)](http://gobuild.io/github.com/fuxiaohei/GoBlog)
-
-##### Manual
-
-Use go get command:
-
-    go get github.com/fuxiaohei/GoBlog
-
-Then you can find binary file `GoBlog(.exe)` in `$GOPATH/bin`.
-
-### Run
-
-Make a new dir to run `Fxh.Go`:
-
-    cd new_dir
-    Goblog
-
-Then it will unzip static files in `new_dir` , initialize raw data and start server at `localhost:9001`.
 
 ##### Admin
 
