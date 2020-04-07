@@ -170,21 +170,21 @@ func writeDefaultData() {
 
 	// write settings
 	s := map[string]string{
-		"site_title":         "Fxh.Go",
-		"site_sub_title":     "Go开发的简单博客",
-		"site_keywords":      "Fxh.Go,Golang,Blog",
-		"site_description":   "Go语言开发的简单博客程序",
-		"site_url":           "http://localhost/",
-		"article_size":       "4",
-		"popular-size": "4",
-		"recent-comment-size":"4",
-		"site_theme":         "default",
-		"enable_go_markdown": "false",
-		"c_footer_weibo":     "#",
-		"c_footer_github":    "#",
-		"c_footer_email":     "#",
-		"c_home_avatar":      "/static/img/site.png",
-		"c_footer_ga":        "<!-- google analytics or other -->",
+		"site_title":          "Fxh.Go",
+		"site_sub_title":      "Go开发的简单博客",
+		"site_keywords":       "Fxh.Go,Golang,Blog",
+		"site_description":    "Go语言开发的简单博客程序",
+		"site_url":            "http://localhost/",
+		"article_size":        "4",
+		"popular_size":        "4",
+		"recent_comment_size": "4",
+		"site_theme":          "default",
+		"enable_go_markdown":  "false",
+		"c_footer_weibo":      "#",
+		"c_footer_github":     "#",
+		"c_footer_email":      "#",
+		"c_home_avatar":       "/static/img/site.png",
+		"c_footer_ga":         "<!-- google analytics or other -->",
 	}
 	Storage.Set("settings", s)
 

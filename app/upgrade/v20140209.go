@@ -22,7 +22,7 @@ func upgrade_20140209(app *GoInk.App) bool {
 	model.DefaultNavigators()
 
 	// write message storage
-	model.Storage.Set("messages",[]*model.Message{})
+	model.Storage.Set("messages", []*model.Message{})
 
 	cmd.ExtractBundleBytes()
 	return true

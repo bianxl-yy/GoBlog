@@ -21,32 +21,29 @@ var (
 	// APP VERSION, as date version
 	VERSION = 20140228
 	// Global GoInk application
-	App              *GoInk.App
-	staticFileSuffix = ".css,.js,.jpg,.jpeg,.png,.gif,.ico,.xml,.zip,.txt,.html,.otf,.svg,.eot,.woff,.ttf,.doc,.ppt,.xls,.docx,.pptx,.xlsx,.xsl"
-	uploadFileSuffix = ".jpg,.png,.gif,.zip,.txt,.doc,.docx,.xls,.xlsx,.ppt,.pptx"
+	App *GoInk.App
+	//App *echo.Echo
 )
+
+var staticFileSuffix = ".css,.js,.jpg,.jpeg,.png,.gif,.ico,.xml,.zip,.txt,.html,.otf,.svg,.eot,.woff,.ttf,.doc,.ppt,.xls,.docx,.pptx,.xlsx,.xsl"
 
 func init() {
 	// init application
 	App = GoInk.New()
+	//App = echo.New()
 
-	// init some settings
-	App.Config().StringOr("app.static_dir", "static")
-	App.Config().StringOr("app.log_dir", "tmp/log")
-	os.MkdirAll(App.Get("log_dir"), os.ModePerm)
-	os.MkdirAll("tmp/data", os.ModePerm)
+	// Initialize some folders
+	os.MkdirAll(model.Config.String("log_dir"), os.ModePerm)
+	os.MkdirAll(model.Config.String("tmp_storage"), os.ModePerm)
+	os.MkdirAll(model.Config.String("upload_dir"), os.ModePerm)
 
-	App.Config().IntOr("app.upload_size", 1024*1024*10)
-	App.Config().StringOr("app.upload_files", uploadFileSuffix)
-	App.Config().StringOr("app.upload_dir", path.Join(App.Get("static_dir"), "upload"))
-	os.MkdirAll(App.Get("upload_dir"), os.ModePerm)
-
-	if App.Get("static_files") != "" {
-		staticFileSuffix = App.Get("static_files")
+	if model.Config.String("static_files") != "" {
+		staticFileSuffix = model.Config.String("static_files")
 	}
 
 	App.Static(func(context *GoInk.Context) {
-		static := App.Config().String("app.static_dir")
+		//static := App.Config().String("app.static_dir")
+		static := model.Config.String("static_dir")
 		url := strings.TrimPrefix(context.Url, "/")
 		if url == "favicon.ico" {
 			url = path.Join(static, url)

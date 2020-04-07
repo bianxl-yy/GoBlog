@@ -53,14 +53,14 @@ func CmdMessage(context *GoInk.Context) {
 
 func CmdLogs(context *GoInk.Context) {
 	if context.Method == "DELETE" {
-		cmd.RemoveLogFile(context.App(), context.String("file"))
+		cmd.RemoveLogFile(context.String("file"))
 		Json(context, true).End()
 		return
 	}
 	context.Layout("admin/cmd")
 	context.Render("admin/cmd/log", map[string]interface{}{
 		"Title": "日志",
-		"Logs":  cmd.GetLogs(context.App()),
+		"Logs":  cmd.GetLogs(),
 	})
 }
 

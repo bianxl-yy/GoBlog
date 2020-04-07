@@ -36,7 +36,6 @@ func Cmd() {
 		os.Exit(1)
 		return
 	}
-
 	// begin cmd init
 	cmd.Init(App)
 }
