@@ -45,6 +45,7 @@ I prefer to use nginx as proxy. The server section in `nginx.conf`:
 ### Thanks
 
 * [@Unknwon](https://github.com/Unknwon) on testing and [zip library](https://github.com/Unknwon/cae) support.
+* [@knadh](https://github.com/knadh) [reading config library](https://github.com/knadh/koanf) support.
 
 ### License
 

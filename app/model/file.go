@@ -2,6 +2,7 @@ package model
 
 import (
 	"github.com/bianxl-yy/GoBlog/app/utils"
+	"github.com/rs/xid"
 	"os"
 	"path"
 	"strconv"
@@ -13,27 +14,23 @@ var (
 )
 
 type File struct {
-	Id          int
-	Name        string
-	UploadTime  int64
-	Url         string
-	ContentType string
-	Author      int
-	IsUsed      bool
-	Size        int64
-	Type        string
-	Hits        int
+	*Model
+	Name string
+	Url  string
+	Size int64
+	Type string
+	Hits int
 }
 
-func CreateFile(f *File) *File {
-	fileMaxId += Storage.TimeInc(3)
-	f.Id = fileMaxId
-	f.UploadTime = utils.Now()
-	f.IsUsed = true
-	f.Hits = 0
-	files = append([]*File{f}, files...)
-	go SyncFiles()
-	return f
+func (f *File) CreateFile() (*File, error) {
+	id := xid.New()
+	f.Id = id.String()
+	f.CreateTime = utils.Now()
+	f.EditTime = f.CreateTime
+	f.UpdateTime = f.CreateTime
+	// TODO: 待处理
+	// 添加文件索引
+	return f, nil
 }
 
 func CreateFilePath(dir string, f *File) string {
@@ -63,19 +60,4 @@ func RemoveFile(id int) {
 		}
 	}
 	go SyncFiles()
-}
-
-func SyncFiles() {
-	Storage.Set("files", files)
-}
-
-func LoadFiles() {
-	files = make([]*File, 0)
-	fileMaxId = 0
-	Storage.Get("files", &files)
-	for _, f := range files {
-		if f.Id > fileMaxId {
-			fileMaxId = f.Id
-		}
-	}
 }

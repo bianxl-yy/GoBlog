@@ -17,12 +17,13 @@ var (
 // Comment Reader struct.
 // Saving comment reader for visiting wall usage or other statics.
 type Reader struct {
-	Author   string
-	Email    string
-	Url      string
-	Active   bool
-	Comments int
-	Rank     int
+	//Author   string
+	Model
+	Email    string `json:"email"`
+	Url      string `json:"url"`
+	Active   bool `json:"active"`
+	Comments int `json:"comments"`
+	Rank     int `json:"rank"`
 }
 
 // Inc increases Reader's rank.
@@ -43,22 +44,21 @@ func (r *Reader) Dec() {
 
 // Comment struct defines a comment item data.
 type Comment struct {
-	Id         int
-	Author     string
-	Email      string
-	Url        string
-	Avatar     string
-	Content    string
-	CreateTime int64
+	Model
+	Email      string `json:"email"`
+	Url        string `json:"url"`
+	Avatar     string `json:"avatar"`
+	Content    string `json:"content"`
+	CreateTime int64 `json:"create_time"`
 	// Content id
-	Cid int
+	Cid int `json:"cid"`
 	// Parent Comment id
-	Pid       int
-	Status    string
-	Ip        string
-	UserAgent string
+	Pid       int `json:"pid"`
+	Status    string `json:"status"`
+	Ip        string `json:"ip"`
+	UserAgent string `json:"user_agent"`
 	// Is comment of admin
-	IsAdmin bool
+	IsAdmin bool `json:"is_admin"`
 }
 
 // ParentMd returns parent comment simple message as markdown text.
