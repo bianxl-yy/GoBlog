@@ -2,7 +2,6 @@ package app
 
 import (
 	"github.com/bianxl-yy/GoBlog/app/cmd"
-	"github.com/bianxl-yy/GoBlog/app/handler"
 	_ "github.com/bianxl-yy/GoBlog/app/upgrade"
 	"os"
 )
@@ -17,12 +16,12 @@ func Cmd() {
 		case "install":
 			cmd.DoInstall()
 		case "update":
-			file, _ := cmd.DoBackup(App, false)
-			cmd.DoUpdateZipBytes(file)
+			//file, _ := cmd.DoBackup(App, false)
+			//cmd.DoUpdateZipBytes(file)
 		case "backup":
-			cmd.DoBackup(App, true)
+			//cmd.DoBackup(App, true)
 		case "upgrade":
-			cmd.DoUpgrade(VERSION, App)
+			//cmd.DoUpgrade(VERSION, App)
 		}
 		os.Exit(1)
 	}
@@ -37,16 +36,18 @@ func Cmd() {
 		return
 	}
 	// begin cmd init
-	cmd.Init(App)
+	//cmd.Init(App)
 }
 
 func registerCmdHandler() {
-	App.Route("GET,POST,DELETE", "/cmd/backup/", handler.Auth, handler.CmdBackup)
-	App.Get("/cmd/backup/file/", handler.Auth, handler.CmdBackupFile)
+	/*
+		App.Route("GET,POST,DELETE", "/cmd/backup/", handler.Auth, handler.CmdBackup)
+		App.Get("/cmd/backup/file/", handler.Auth, handler.CmdBackupFile)
 
-	App.Route("GET,POST,DELETE", "/cmd/message/", handler.Auth, handler.CmdMessage)
-	App.Route("GET,DELETE", "/cmd/logs/", handler.Auth, handler.CmdLogs)
-	App.Get("/cmd/monitor/", handler.Auth, handler.CmdMonitor)
-	App.Route("GET,POST", "/cmd/theme/", handler.Auth, handler.CmdTheme)
-	App.Route("GET,POST", "/cmd/reader/", handler.Auth, handler.CmdReader)
+		App.Route("GET,POST,DELETE", "/cmd/message/", handler.Auth, handler.CmdMessage)
+		App.Route("GET,DELETE", "/cmd/logs/", handler.Auth, handler.CmdLogs)
+		App.Get("/cmd/monitor/", handler.Auth, handler.CmdMonitor)
+		App.Route("GET,POST", "/cmd/theme/", handler.Auth, handler.CmdTheme)
+		App.Route("GET,POST", "/cmd/reader/", handler.Auth, handler.CmdReader)
+	*/
 }

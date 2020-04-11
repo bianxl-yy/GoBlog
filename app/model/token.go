@@ -3,7 +3,7 @@ package model
 import (
 	"fmt"
 	"github.com/bianxl-yy/GoBlog/app/utils"
-	"github.com/fuxiaohei/GoInk"
+	"github.com/labstack/echo"
 )
 
 var tokens map[string]*Token
@@ -24,12 +24,12 @@ func (t *Token) IsValid() bool {
 }
 
 // create new token from user and context.
-func CreateToken(u *User, context *GoInk.Context, expire int64) *Token {
+func CreateToken(u *User, c echo.Context, expire int64) *Token {
 	t := new(Token)
 	t.UserId = u.Id
 	t.CreateTime = utils.Now()
 	t.ExpireTime = t.CreateTime + expire
-	t.Value = utils.Sha1(fmt.Sprintf("%s-%s-%d-%d", context.Ip, context.UserAgent, t.CreateTime, t.UserId))
+	t.Value = utils.Sha1(fmt.Sprintf("%s-%s-%d-%d", c.RealIP(), c.Request().UserAgent, t.CreateTime, t.UserId))
 	tokens[t.Value] = t
 	go SyncTokens()
 	return t

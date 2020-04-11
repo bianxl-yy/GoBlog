@@ -3,15 +3,11 @@ package model
 import (
 	"errors"
 	"github.com/bianxl-yy/GoBlog/app/utils"
-)
-
-var (
-	users     []*User
-	userMaxId int
+	"github.com/rs/xid"
 )
 
 type User struct {
-	Id            int
+	Id            string
 	Name          string
 	Password      string
 	Nick          string
@@ -23,6 +19,10 @@ type User struct {
 	LastLoginTime int64
 	Role          string
 }
+
+var (
+	users []*User
+)
 
 // check user password.
 func (u *User) CheckPassword(pwd string) bool {
@@ -46,7 +46,7 @@ func (u *User) ChangePassword(pwd string) {
 }
 
 // get a user by given id.
-func GetUserById(id int) *User {
+func GetUserById(id string) *User {
 	for _, u := range users {
 		if u.Id == id {
 			return u
@@ -91,8 +91,9 @@ func CreateUser(u *User) error {
 	if GetUserByName(u.Email) != nil {
 		return errors.New("email-repeat")
 	}
-	userMaxId += Storage.TimeInc(5)
-	u.Id = userMaxId
+	//userMaxId += Storage.TimeInc(5)
+	id := xid.New()
+	u.Id = id.String()
 	u.CreateTime = utils.Now()
 	u.LastLoginTime = u.CreateTime
 	users = append(users, u)
@@ -118,11 +119,5 @@ func SyncUsers() {
 
 func LoadUsers() {
 	users = make([]*User, 0)
-	userMaxId = 0
 	Storage.Get("users", &users)
-	for _, u := range users {
-		if u.Id > userMaxId {
-			userMaxId = u.Id
-		}
-	}
 }
