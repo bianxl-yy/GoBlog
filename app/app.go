@@ -86,6 +86,7 @@ func catchExit() {
 	for {
 		switch <-sig {
 		case os.Interrupt, sigTerm:
+			// TODO: 待添加，将配置写入文件
 			println("ready to exit")
 			os.Exit(0)
 		}

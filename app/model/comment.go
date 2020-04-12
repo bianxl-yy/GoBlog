@@ -7,41 +7,6 @@ import (
 	"strings"
 )
 
-var (
-	readers       map[string]*Reader
-	comments      map[int]*Comment
-	commentsIndex []int
-	commentMaxId  int
-)
-
-// Comment Reader struct.
-// Saving comment reader for visiting wall usage or other statics.
-type Reader struct {
-	//Author   string
-	Model
-	Email    string `json:"email"`
-	Url      string `json:"url"`
-	Active   bool `json:"active"`
-	Comments int `json:"comments"`
-	Rank     int `json:"rank"`
-}
-
-// Inc increases Reader's rank.
-func (r *Reader) Inc() {
-	r.Rank++
-	if r.Rank > 1 {
-		r.Active = true
-	}
-}
-
-// Dec decreases Reader's rank.
-func (r *Reader) Dec() {
-	r.Rank--
-	if r.Rank < 1 {
-		r.Active = false
-	}
-}
-
 // Comment struct defines a comment item data.
 type Comment struct {
 	Model
@@ -49,11 +14,11 @@ type Comment struct {
 	Url        string `json:"url"`
 	Avatar     string `json:"avatar"`
 	Content    string `json:"content"`
-	CreateTime int64 `json:"create_time"`
+	CreateTime int64  `json:"create_time"`
 	// Content id
 	Cid int `json:"cid"`
 	// Parent Comment id
-	Pid       int `json:"pid"`
+	Pid       int    `json:"pid"`
 	Status    string `json:"status"`
 	Ip        string `json:"ip"`
 	UserAgent string `json:"user_agent"`

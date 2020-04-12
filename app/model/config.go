@@ -7,6 +7,7 @@ import (
 	"github.com/knadh/koanf/providers/file"
 	"log"
 	"path"
+	"time"
 )
 
 const (
@@ -38,13 +39,41 @@ func initConfig() error {
 	errCheck(Config.Load(confmap.Provider(map[string]interface{}{
 		"static_dir":  "static",
 		"upload_size": 1024 * 1024 * 10,
+		"navigators": []*Navigator{
+			{
+				Model: &Model{
+					// TODO: 待添加
+					Id: "",
+					// TODO: 待添加
+					AuthorId:   "",
+					CreateTime: time.Now().Unix(),
+				},
+				Title:       "Home",
+				Description: "首页",
+				Link:        "/",
+				Sort:        0,
+			},
+			{
+				Model: &Model{
+					// TODO: 待添加
+					Id: "",
+					// TODO: 待添加
+					AuthorId:   "",
+					CreateTime: time.Now().Unix(),
+				},
+				Title:       "关于",
+				Description: "About",
+				Link:        "/about",
+				Sort:        1,
+			},
+		},
 		//"upload_files": uploadFileSuffix,
 	}, "."), nil))
 	errCheck(Config.Load(confmap.Provider(map[string]interface{}{
-		"log_dir":     path.Join(Config.String("storage_dir"), "log"),
 		"article_dir": path.Join(Config.String("storage_dir"), "articles"),
 		"page_dir":    path.Join(Config.String("storage_dir"), "pages"),
 		"upload_dir":  path.Join(Config.String("static_dir"), "uploads"),
+		"log_dir":     path.Join(Config.String("storage_dir"), "log"),
 	}, "."), nil))
 
 	// 载入配置文件

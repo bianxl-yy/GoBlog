@@ -1,7 +1,6 @@
 package model
 
 import (
-	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"os"
@@ -15,8 +14,10 @@ type storage struct {
 }
 
 type storageData interface {
-	GetKey() string
-	GetType() string
+	GetKey() (string, error)
+	GetType() (string, error)
+	Content() ([]byte, error)
+	Unmarshal([]byte) error
 }
 
 // 全局使用统一入口读写文件
@@ -35,18 +36,18 @@ func (s *storage) Init(dir ...string) error {
 
 // Get 读取内容
 func (s *storage) Get(v storageData) error {
-	file := path.Join(s.dir, v.GetType(), v.GetKey()+".json")
+	// 获取信息
+	key, _ := v.GetKey()
+	contentType, _ := v.GetType()
+	// 组合路径
+	file := path.Join(s.dir, contentType+"s", key+".json")
 	// 读取内容
 	bytes, err := ioutil.ReadFile(file)
 	if err != nil {
-		return errors.New("read storage '" + v.GetKey() + "' error")
+		return errors.New("read storage '" + key + "' error")
 	}
 	// 解析内容
-	err = json.Unmarshal(bytes, v)
-	if err != nil {
-		return errors.New("json decode '" + v.GetKey() + "' error")
-	}
-	return nil
+	return v.Unmarshal(bytes)
 }
 
 // Add 添加文件
@@ -54,10 +55,13 @@ func (s *storage) Write(v storageData) error {
 	// 加锁
 	s.locker.Lock()
 	defer s.locker.Unlock()
-	// 编码内容
-	bytes, e := json.Marshal(v)
-	if e != nil {
-		return errors.New("json encode '" + v.GetKey() + "' error")
+	// 获取信息
+	key, _ := v.GetKey()
+	contentType, _ := v.GetType()
+	// 获取内容
+	bytes, err := v.Content()
+	if err != nil {
+		return err
 	}
 	// 无脑删文件
 	// 讲道理先判断一下文件是否存在会更好
@@ -65,29 +69,39 @@ func (s *storage) Write(v storageData) error {
 		return err
 	}
 	// 组合路径
-	file := path.Join(s.dir, v.GetType(), v.GetKey()+".json")
+	file := path.Join(s.dir, contentType+"s", key+".json")
 	// 写入文件
-	e = ioutil.WriteFile(file, bytes, 0777)
-	if e != nil {
-		return errors.New("write storage '" + v.GetKey() + "' error")
+	err = ioutil.WriteFile(file, bytes, 0777)
+	if err != nil {
+		return errors.New("write storage '" + key + "' error")
 	}
 	return nil
 }
 
 // Delete 删除内容
 func (s *storage) Remove(v storageData) error {
-	file := path.Join(s.dir, v.GetType(), v.GetKey()+".json")
-	e := os.Remove(file)
-	if e != nil {
-		return errors.New("delete storage '" + v.GetKey() + "' error")
+	// 获取信息
+	key, _ := v.GetKey()
+	contentType, _ := v.GetType()
+	// 组合路径
+	file := path.Join(s.dir, contentType+"s", key+".json")
+	// 执行删除
+	if err := os.Remove(file); err != nil {
+		return errors.New("delete storage '" + key + "' error")
 	}
 	return nil
 }
 
-// Has 验证内容是否存在
+// Has 根据查询到的文件信息判断内容是否存在
 func (s *storage) Has(v storageData) bool {
-	file := path.Join(s.dir, v.GetType(), v.GetKey()+".json")
+	// 获取信息
+	key, _ := v.GetKey()
+	contentType, _ := v.GetType()
+	// 组合路径
+	file := path.Join(s.dir, contentType+"s", key+".json")
+	// 获取文件信息
 	_, e := os.Stat(file)
+
 	return e == nil
 }
 
@@ -114,10 +128,6 @@ func initStorage() error {
 		return err
 	}
 
-	err = storageManage.Init()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	// 初始化存储管理
+	return storageManage.Init()
 }

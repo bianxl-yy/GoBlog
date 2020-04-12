@@ -1,21 +1,87 @@
 package model
 
-import "github.com/bianxl-yy/GoBlog/app/utils"
+import (
+	"encoding/json"
+	"errors"
+	"github.com/bianxl-yy/GoBlog/app/utils"
+	"github.com/rs/xid"
+)
 
-// GetPageList gets pages list and pager no matter page status.
-// In common cases, no need to get a list or pagers for public page.
-func GetPageList(page, size int) ([]*Content, *utils.Pager) {
-	index := contentsIndex["page"]
-	pager := utils.NewPager(page, size, len(index))
-	pages := make([]*Content, 0)
-	if len(index) < 1 {
-		return pages, pager
+// Content instance, defines content data items.
+type Page struct {
+	*Model
+	Title string `json:"title"`
+	Slug  string `json:"slug"`
+	//Summary    string     `json:"summary"`
+	Text string `json:"text"`
+	//Type       string `json:"type"`
+	Status     string `json:"status"`
+	Format     string `json:"format"`
+	Hits       uint   `json:"hits"`
+	CommentNum uint   `json:"comment_num"`
+	//IsTop      bool       `json:"is_top"`
+	IsComment bool       `json:"is_comment"`
+	Comments  []*Comment `json:"comments"`
+	//Tags       []*Tag     `json:"tags"`
+}
+
+func (c *Page) GetKey() (string, error) {
+	return c.Id, nil
+}
+
+func (c *Page) GetType() (string, error) {
+	return "page", nil
+}
+
+func (c *Page) Content() ([]byte, error) {
+	bytes, e := json.Marshal(c)
+	if e != nil {
+		contentType, _ := c.GetType()
+		return nil, errors.New("json encode '" + contentType + "' error")
 	}
-	if page > pager.Pages {
-		return pages, pager
+	return bytes, nil
+}
+
+func (c *Page) Unmarshal(data []byte) error {
+	return json.Unmarshal(data, c)
+}
+
+// CreateContent creates new content.
+// t means content type, article or page.
+func (c *Page) Write() (string, error) {
+	// 验证Slug是否已存在
+	// TODO: 待处理
+	/*if c.GetBySlug() != nil {
+		return nil, errors.New("slug-repeat")
 	}
-	for i := pager.Begin; i <= pager.End; i++ {
-		pages = append(pages, GetContentById(index[i-1]))
+	*/
+	// 验证是否设置作者ID
+	if c.AuthorId == "" {
+		return "", errors.New("AuthorId cannot be null")
 	}
-	return pages, pager
+
+	// 判断是否为更新
+	if c.Id == "" {
+		guid := xid.New()
+		c.Id = guid.String()
+		//c.Type = "page"
+		c.CreateTime = utils.Now()
+		c.EditTime = c.CreateTime
+		c.UpdateTime = c.CreateTime
+	} else {
+		c.UpdateTime = utils.Now()
+	}
+
+	return c.Id, storageManage.Write(c)
+}
+
+// GetContentById gets a content by given id.
+func (c *Page) Get() error {
+	return storageManage.Get(c)
+}
+
+// RemoveContent 删除内容
+func (c *Page) Remove() error {
+	c.Status = "DELETE"
+	return storageManage.Write(c)
 }

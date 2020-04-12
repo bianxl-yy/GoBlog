@@ -111,13 +111,3 @@ func RemoveUser(u *User) {
 	}
 	go SyncUsers()
 }
-
-// write users to json.
-func SyncUsers() {
-	Storage.Set("users", users)
-}
-
-func LoadUsers() {
-	users = make([]*User, 0)
-	Storage.Get("users", &users)
-}
