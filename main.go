@@ -1,9 +1,7 @@
 package main
 
-import "github.com/bianxl-yy/GoBlog/app"
+import "github.com/bianxl-yy/GoBlog/internal/app"
 
 func main() {
-	app.Cmd()
-	app.Init()
 	app.Run()
 }
